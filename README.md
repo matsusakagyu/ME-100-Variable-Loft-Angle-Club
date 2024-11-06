@@ -1,0 +1,2 @@
+# ME 100 Variable Loft Angle Club
+ Repository for ME 100 project for team AB. A golf training aid that takes user input such as distance or loft angle on a phone or computer and would adjust the loft angle of the club to ensure the golfer has the right club for that distance.  Additional features include an accelerometer to test swing speed and ultrasonic sensors to sense ball position during setup and club height from ground during the swing
