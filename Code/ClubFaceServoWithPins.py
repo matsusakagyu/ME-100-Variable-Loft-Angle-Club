@@ -23,30 +23,43 @@ def set_servo_angle(angle):
     pwm_face.duty(duty_face)
     time.sleep(2)
     pwm_pin.duty(duty_pin_in)
+    
+angles_dict = {
+    5: 20,    # For input 1, angle 0 degrees
+    6: 40,   # For input 2, angle 30 degrees
+    7: 65,   # For input 3, angle 60 degrees
+    8: 85,   # For input 4, angle 90 degrees
+    9: 115,  # For input 5, angle 120 degrees
+    'P': 145   # For input 6, angle 150 degrees
+}
 
 # Main loop: Read user input and move the servo
 while True:
     try:
-        # Ask user for an angle between 0 and 180, or 'exit' to quit
-        user_input = input("Enter the servo angle (0-180) or 'exit' to quit: ")
+        # Ask user for input (numbers 5-9 or 'P'), or 'exit' to quit
+        user_input = input("Enter the club you would like (P through 5) or 'exit' to quit: ")
 
         # Allow the user to exit the program
         if user_input.lower() == "exit":
             print("Exiting the program.")
             break
 
-        # Convert input to an integer
-        angle = int(user_input)
+        # Check if the input is numeric (for 5-9) or a valid string ('P')
+        if user_input.isdigit():
+            input_value = int(user_input)
+        else:
+            input_value = user_input.upper()  # Convert input to uppercase if it's a string (to handle 'p' or 'P')
 
-        # Check if the input is valid (within 0-180 range)
-        if 0 <= angle <= 180:
+        # Check if the input is valid (should be in the dictionary keys)
+        if input_value in angles_dict:
+            angle = angles_dict[input_value]
             print(f"Moving servo to {angle} degrees")
             set_servo_angle(angle)
         else:
-            print("Invalid angle! Please enter a value between 0 and 180.")
+            print("Invalid input! Please enter a number between 5 and 9, or 'P'.")
         
     except ValueError:
-        print("Invalid input! Please enter a valid number.")
+        print("Invalid input! Please enter a valid number or 'P'.")
 
     # Add a small delay before prompting again
     time.sleep(0.1)

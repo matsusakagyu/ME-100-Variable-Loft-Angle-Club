@@ -34,6 +34,15 @@ def set_servo_angle(angle):
     time.sleep(2)
     pwm_pin.duty(duty_pin_in)
     
+angles_dict = {
+    5: 20,    # For input 1, angle 0 degrees
+    6: 40,   # For input 2, angle 30 degrees
+    7: 65,   # For input 3, angle 60 degrees
+    8: 85,   # For input 4, angle 90 degrees
+    9: 115,  # For input 5, angle 120 degrees
+    'P': 145   # For input 6, angle 150 degrees
+}
+    
 while True:
     host, msg = e.irecv(1000)  # Wait for a message with a timeout of 1000 ms
     if msg:  # If a message was received
@@ -44,22 +53,25 @@ while True:
         if message_str.strip().lower() == 'exit':
             print("Exiting loop and resetting the ESP32...")
             machine.reset()  # Reset the ESP32 and stop the program
-        
-        # Check if there's enough parts to process the angle
-        elif len(parts) > 3:  # Ensure there's at least 4 parts (index 3 is the angle)
-            angle_str = parts[3]
+        # Check if there's enough parts to process the club identifier (at least 4 parts)
+        elif len(parts) > 3:  # Ensure there's at least 4 parts (index 3 is the club identifier)
+            club_identifier = parts[3].upper()  # Convert to uppercase to handle both 'p' and 'P'
 
-            try:
-                angle = int(angle_str)  # Attempt to convert the angle to an integer
-                if 0 <= angle <= 180:  # Check if the angle is valid
-                    print(f"Moving servo to {angle} degrees")
-                    set_servo_angle(angle)
-                else:
-                    print("Invalid angle! Please enter a value between 0 and 180.")
-            except ValueError:
-                print(f"Invalid angle value: '{angle_str}' is not a number!")
+            if club_identifier.isdigit():  # If the input is a number (5-9)
+                club_identifier = int(club_identifier)
+            
+            # Check if the club identifier is valid (exists in angles_dict)
+            if club_identifier in angles_dict:
+                angle = angles_dict[club_identifier]
+                print(f"Moving servo to {angle} degrees for club {club_identifier}")
+                set_servo_angle(angle)
+            else:
+                print(f"Invalid club identifier: '{club_identifier}'. Please enter a valid club (5-9 or 'P').")
+                time.sleep(0.1)
+                
         else:
-            print("Invalid message format! Ensure the message contains a valid angle.")
+            print("Invalid message format! Ensure the message contains a valid club identifier.")
+        
         time.sleep(2)
     else:
         print("No message received, continuing to listen...")
