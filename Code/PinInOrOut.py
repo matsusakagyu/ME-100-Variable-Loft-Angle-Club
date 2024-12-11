@@ -2,8 +2,10 @@ import machine
 import time
 
 # Set up PWM on GPIO 23 (change this if you're using a different pin)
-servo_pin = machine.Pin(12)
-pwm = machine.PWM(servo_pin, freq=50)  # Standard servo frequency of 50Hz
+face_servo_pin = machine.Pin(12)
+pin_pin = machine.Pin(15)
+pwm_face = machine.PWM(face_servo_pin, freq=50)  # Standard servo frequency of 50Hz
+pwm_pin = machine.PWM(pin_pin, freq=50)  # Standard servo frequency of 50Hz
 
 # Function to map the angle (0-180 degrees) to PWM duty cycle (40 to 115)
 def map_angle_to_duty_cycle(angle):
@@ -13,8 +15,12 @@ def map_angle_to_duty_cycle(angle):
 
 # Function to set the servo angle
 def set_servo_angle(angle):
-    duty = map_angle_to_duty_cycle(angle)
-    pwm.duty(duty)
+    duty_face = map_angle_to_duty_cycle(angle)
+    duty_pin_out = map_angle_to_duty_cycle(80)
+    duty_pin_in = map_angle_to_duty_cycle(30)
+    pwm_pin.duty(duty_pin_in)
+    time.sleep(2)
+    time.sleep(2)
 
 # Main loop: Read user input and move the servo
 while True:
