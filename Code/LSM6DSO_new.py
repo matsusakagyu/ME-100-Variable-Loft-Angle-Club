@@ -55,7 +55,7 @@ try:
 		Xaccel(i2c.scan()[i])
 		#Yaccel(i2c.scan()[i])
 		#Zaccel(i2c.scan()[i])
-		time.sleep(0.1)
+		time.sleep(0.0001)
 
 except KeyboardInterrupt:
 	i2c.deinit()

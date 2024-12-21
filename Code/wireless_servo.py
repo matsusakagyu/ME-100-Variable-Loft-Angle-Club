@@ -8,7 +8,7 @@ sta = network.WLAN(network.STA_IF)
 sta.active(True)
 sta.disconnect()
 
-e = espnow.ESPNow()s
+e = espnow.ESPNow()
 e.active(True)
 
 # Set up PWM on GPIO 23 (change this if you're using a different pin)
@@ -75,4 +75,4 @@ while True:
         time.sleep(2)
     else:
         print("No message received, continuing to listen...")
-        time.sleep(5)  # Short sleep to avoid overloading the processor
+        time.sleep(0.1)  # Short sleep to avoid overloading the processor
